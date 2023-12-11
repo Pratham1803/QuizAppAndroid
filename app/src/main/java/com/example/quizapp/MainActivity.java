@@ -1,7 +1,9 @@
 package com.example.quizapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -11,7 +13,6 @@ import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
     static TextView lblQues;
-    static TextView lblRes;
     static List<String> strQues = Arrays.asList( "Java is Developed in 1900?", "Java is Developed by Sun Microsystem?",
             "Java developed in Python", "Java Supports Mulitple Inheritance", "Java Supports interface?" );
     static boolean arrAns[] = { false, true, false, false, true };
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         else
             restart();
 
-        lblRes.setText("Score : " + score);
+        //lblRes.setText("Score : " + score);
         //Toast.makeText(this, , Toast.LENGTH_SHORT).show();
     }
     public void btnFalse_Clicked(View view){
@@ -46,13 +47,30 @@ public class MainActivity extends AppCompatActivity {
         }
         else
             restart();
-        lblRes.setText("Score : " + score);
+        //lblRes.setText("Score : " + score);
         //Toast.makeText(this, "Your Score is "+score, Toast.LENGTH_SHORT).show();
     }
     private void restart(){
-        score = 0;
-        arrSelectedindex.clear();
-        getRandome();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your score is : "+score+"\nDo You Want to restart?");
+        builder.setPositiveButton("Restart", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                score = 0;
+                arrSelectedindex.clear();
+                getRandome();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                System.exit(0);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
     static private void getRandome() {
         int index;
@@ -71,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         lblQues = findViewById(R.id.lblQue);
-        lblRes = findViewById(R.id.lblResult);
+
         getRandome();
     }
 }
